@@ -6,6 +6,7 @@
 package cortolabopoo;
 
 import conexion.Conexion;
+import vista.Consulta;
 
 /**
  *
@@ -17,7 +18,12 @@ public class CortoLaboPoo {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Conexion con = Conexion.conectar();
+        java.awt.EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                new Consulta().setVisible(true);
+            }
+        });
     }
     
 }
