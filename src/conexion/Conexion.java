@@ -48,8 +48,8 @@ public class Conexion {
     private void cargarCredenciales() {
        user = "root";
        pass = "";
-       driver = "com.mysql.jdbc.Drive";
-       url = "jdbc:mysql://localhost/cortoLaboPoo";
+       driver = "com.mysql.jdbc.Driver";
+       url = "jdbc:mysql://localhost/cortolabopoo";
     }
     
     public Connection getCnx(){
