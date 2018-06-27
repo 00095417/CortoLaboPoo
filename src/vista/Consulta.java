@@ -5,7 +5,9 @@
  */
 package vista;
 
+import dao.FiltroDao;
 import java.awt.Container;
+import java.util.ArrayList;
 import javafx.scene.control.ComboBox;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -13,9 +15,11 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import modelo.Filtro;
 
 /**
  *
@@ -42,6 +46,7 @@ public class Consulta extends JFrame {
         setLayout(null);
         agregarLabels();
         formulario();
+        llenarTabla();
         container.add(lblNombre);
         container.add(lblDirector);
         container.add(lblPais);
@@ -54,6 +59,11 @@ public class Consulta extends JFrame {
         container.add(annio);
         container.add(clasificacion);
         container.add(en_proyeccion);
+        container.add(insertar);
+        container.add(eliminar);
+        container.add(actualizar);
+        container.add(buscar);
+        container.add(table);
         
         setSize(900,500);
         //eventos();
@@ -104,13 +114,58 @@ public class Consulta extends JFrame {
         annio.setBounds(590, 120, ANCHOC, ALTOC);
         clasificacion.setBounds(590, 80, ANCHOC, ALTOC);
         en_proyeccion.setBounds(590, 160, ANCHOC, ALTOC);
-        table.setBounds(1, 400, WIDTH, HEIGHT);
+        insertar.setBounds(100, 250, ANCHOC, ALTOC);
+        eliminar.setBounds(300, 250, ANCHOC, ALTOC);
+        actualizar.setBounds(500, 250, ANCHOC, ALTOC);
+        buscar.setBounds(700, 250, ANCHOC, ALTOC);
+        table.setBounds(1, 400, 600, 200);
+        table.add(new JScrollPane(resultados));
         
     }
     
-    
-    
-
-    
+    public void llenarTabla() {
+        //coclocamos el tipo de dato que tendra nuestra columna
+        //si es un dato booleano aparecera un checkbox en el JTable
+        tm = new DefaultTableModel()
+        {
+            public Class<?> getColumnClass(int column){
+                switch(column)
+                {
+                    case 0:
+                        return String.class;
+                    case 1:
+                        return String.class;
+                    case 2:
+                        return String.class;
+                    case 3:
+                        return String.class;
+                    case 4:
+                        return String.class;
+                    case 5:
+                        return String.class;
+                    default:
+                        return Boolean.class;
+                
+                }
+            }
+        };
+        //agregamos las columnas que se mostraran con sus respectivos nombres
+        tm.addColumn("Nombre");
+        tm.addColumn("Director");
+        tm.addColumn("Pais");
+        tm.addColumn("Clasificacion");
+        tm.addColumn("Año");
+        tm.addColumn("En proyección");
+        //Realizamos nuestra consulta a nuestra base de datos por medio de metodo redall
+        FiltroDao fd = new FiltroDao();
+        ArrayList<Filtro> filtros = fd.readAll();
+        //Agregamos el resultado a nuestro JTable
+        for(Filtro fi:filtros)
+        {
+            tm.addRow(new Object[]{fi.getNombre(),fi.getDirector(),fi.getPais(),fi.getClasificacion(),fi.getAnnio(),fi.isEnProyeccion()});
+        }
+        //le agregamos el modelo a nuestra tabla
+        resultados.setModel(tm);   
+    }    
 
 }
